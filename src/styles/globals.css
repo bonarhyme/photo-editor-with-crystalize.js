@@ -1,107 +1,218 @@
 :root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
-  --secondary-glow: radial-gradient(
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
-
-  --tile-start-rgb: 239, 245, 249;
-  --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
-
-  --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 180, 185, 188;
-  --card-border-rgb: 131, 134, 135;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
-
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
-
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
+  --primary: #007bff;
+  --info: #17a2b8;
+  --success: #28a745;
+  --dark: #343a40;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --secondary: #6c757d;
+  --light: #f8f9fa;
+  --white: #ffffff;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.app-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.sidebar-wrapper {
+  width: 200px;
+  min-height: 100vh;
+  border-right: 2px solid var(--dark);
+  overflow-y: auto;
+  background-color: var(--dark);
+  color: var(--light);
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.image-uploader-wrapper {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#image-selector {
+  display: none;
+  border: 2px solid blue;
+}
+
+.image-uploader-wrapper .image-uploader-label {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  text-transform: capitalize;
+  background-color: var(--warning);
+  color: var(--dark);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tool-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tool-list-wrapper .tool-list-item {
+  cursor: pointer;
+  text-transform: capitalize;
+  width: 150px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.tool-list-header {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  font-size: 1.2rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
+  letter-spacing: 1px;
+}
+
+.tool-list-wrapper .tool-list-item:hover {
+  filter: brightness(0.95);
+  transform: scaleX(1.05);
+}
+
+.tool-list-wrapper .tool-list-item span {
+  display: block;
+  text-align: left;
+  font-family: monospace;
+}
+
+.canvas-editor-wrapper {
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+}
+
+.canvas-wrapper {
+  width: 100%;
+  flex: 1;
+  background-color: var(--light);
+  max-width: 1000px;
+  overflow: auto;
+}
+
+.canvas-wrapper .image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvas-wrapper img {
+  transition: all 0.5s linear;
+}
+
+.canvas-wrapper .no-image {
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: var(--secondary);
+}
+
+.editor-wrapper {
+  width: 300px;
+  background-color: var(--dark);
+  padding: 1rem;
+}
+
+.editor-wrapper > .buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.editor-wrapper .action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem auto;
+}
+
+.editor-items {
+  background-color: var(--light);
+  height: 300px;
+  padding-top: 2rem;
+}
+
+.editor-items-header {
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  text-transform: capitalize;
+}
+
+.editor-field input,
+.editor-field select {
+  font-size: 1rem;
+  padding: 0.2rem;
+}
+
+.editor-field button {
+  width: 100px;
+  margin-left: auto;
+  margin-top: 1rem;
+  background-color: var(--primary);
+  color: var(--light);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.undo-button,
+.redo-button {
+  padding: 0.2rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.download-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.download-button-wrapper > .download-button {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 0.8rem 1.4rem;
+  border-radius: 25px;
+  cursor: pointer;
+  filter: brightness(0.95);
+}
+
+.download-button-wrapper > .download-button:hover {
+  filter: brightness(1);
 }

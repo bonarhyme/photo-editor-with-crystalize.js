@@ -9,8 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "crystalize.js": "^1.0.0",
+    "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "next": "latest"
+    "react-icons": "^4.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.8.0",
+    "@types/react": "18.2.24",
+    "typescript": "5.2.2"
   }
 }
