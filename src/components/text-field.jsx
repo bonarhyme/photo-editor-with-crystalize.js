@@ -10,7 +10,6 @@ export const TextField = ({ modifierName, type = 'text' }) => {
   };
 
   const saveValue = () => {
-    console.log({ value });
     setCrystalizer(
       crystalizer
         .leave(pointer)

@@ -1,13 +1,14 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
+
 import { useEditImage } from '../crystalizer/state';
 
 export const Canvas = (props) => {
-  const { imageUrl, imageStyle } = useEditImage();
+  const { imageUrl, imageStyle, imageRef } = useEditImage();
 
   return (
     <div className='canvas-wrapper'>
       {imageUrl ? (
-        <div className='image-container'>
+        <div className='image-container' ref={imageRef}>
           <img src={imageUrl} style={{ ...imageStyle.style }} />
         </div>
       ) : (

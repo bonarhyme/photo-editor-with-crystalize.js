@@ -1,13 +1,14 @@
-import { createContext, useEffect, useCallback, useContext, useState, Dispatch, SetStateAction, useMemo } from 'react';
+import { createContext, useRef, useCallback, useContext, useState, useMemo } from 'react';
 import Crystalizer from 'crystalize.js';
+import { toPng } from 'html-to-image';
+import download from 'downloadjs';
 
 const EditImageContext = createContext(null);
 
 export const initialData = {
   style: {
-    width: 400,
-    height: 400,
-    // filter: {
+    width: 400, // px
+    height: 400, // px
     blur: 0, // px
     brightness: 100, // %
     contrast: 100, // %
@@ -16,10 +17,7 @@ export const initialData = {
     invert: 0, // %
     opacity: 100, // %
     sepia: 0, // %
-    // },
-    // transform: {
     scale: 1, // number
-    // },
     'object-fit': 'none', // fill, containe, cover, none, scale-down
   },
   id: 1,
@@ -28,13 +26,15 @@ export const initialData = {
 let crystalizerInitializer = new Crystalizer({
   initial: initialData,
   reduce: (crystal, shard) => {
-    console.log({ crystal, shard, outside: true });
+    console.log({ crystal, shard });
     return { id: shard.id + crystal.id, style: shard.style };
   },
 });
 
 // main context provider
 export const EditImageContextProvider = ({ children }) => {
+  const imageRef = useRef();
+
   const [imageUrl, setImageUrl] = useState('');
   const [crystalizer, setCrystalizer] = useState(crystalizerInitializer);
   const [modifier, setModifier] = useState('width');
@@ -42,10 +42,10 @@ export const EditImageContextProvider = ({ children }) => {
 
   const [crystal, shards, base] = crystalizer.leave(pointer).take(1);
 
-  const onImageUpload = (image) => {
+  const onImageUpload = useCallback((image) => {
     const _image = URL.createObjectURL(image);
     setImageUrl(_image);
-  };
+  }, []);
 
   const handleUndo = useCallback(() => {
     setPointer((l) => l + 1);
@@ -53,6 +53,16 @@ export const EditImageContextProvider = ({ children }) => {
 
   const handleRedo = useCallback(() => {
     setPointer((l) => l - 1);
+  }, []);
+
+  const downloadImage = useCallback(() => {
+    toPng(imageRef.current)
+      .then((dataURL) => {
+        download(dataURL, 'custom-image.png');
+      })
+      .catch((e) => {
+        console.log({ e });
+      });
   }, []);
 
   const imageStyle = useMemo(() => {
@@ -85,10 +95,6 @@ export const EditImageContextProvider = ({ children }) => {
       scale = shards[0]?.style['scale'];
       hueRotate = shards[0]?.style['hue-rotate'];
     }
-
-    console.log(
-      `opacity(${opacity}%) blur(${blur}px) brightness(${brightness}%) brightness(${brightness}%) contrast(${contrast}%) grayscale(${grayscale}%) invert(${invert}%) sepia(${sepia}%) hue-rotate(${hueRotate}deg)`
-    );
 
     return {
       style: {
@@ -130,6 +136,8 @@ export const EditImageContextProvider = ({ children }) => {
         handleRedo,
         setPointer,
         pointer,
+        imageRef,
+        downloadImage,
       }}
     >
       {children}
@@ -141,7 +149,7 @@ export const useEditImage = () => {
   const context = useContext(EditImageContext);
 
   if (!context) {
-    throw new Error('Project context is missing');
+    throw new Error('Use edit image context is missing');
   }
 
   return context;

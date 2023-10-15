@@ -108,7 +108,6 @@ body {
   width: 100%;
   flex: 1;
   background-color: var(--light);
-  max-width: 1000px;
   overflow: auto;
 }
 
